@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 if __name__ == '__main__':
     # replay_folder = '/home/human/Documents/training_data'
-    replay_folder= '/home/human/Documents/slippi replays'
+    replay_folder= '/home/soak/Documents/slippi replays/melee_public_slp_dataset_v2/training_data/'
     replay_paths = []
     for root, dirs, files in os.walk(replay_folder):
         for name in files:
@@ -23,6 +23,7 @@ if __name__ == '__main__':
     j = json.load(f)
 
     for path in tqdm(replay_paths):
+        print(path)
         console = melee.Console(is_dolphin=False,
                                 allow_old_version=True,
                                 path=path)
@@ -55,6 +56,7 @@ if __name__ == '__main__':
         counter = 0
         while True:
             counter += 1
+            #print("hello")
             gamestate: melee.GameState = console.step()
             p1: melee.PlayerState = gamestate.players.get(ports[0])
             controller: melee.ControllerState = p1.controller_state

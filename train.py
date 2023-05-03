@@ -84,8 +84,8 @@ def create_model(X: np.ndarray, Y: np.ndarray, player_character: melee.Character
 
 
 if __name__ == '__main__':
-    player_character = melee.Character.MARTH
-    opponent_character = melee.Character.CPTFALCON
+    player_character = melee.Character.PIKACHU
+    opponent_character = melee.Character.FOX
     stage = melee.Stage.FINAL_DESTINATION
     lr = 5e-5
 

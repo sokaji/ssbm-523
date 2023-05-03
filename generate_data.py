@@ -133,8 +133,11 @@ def process_replays(replays: dict, c1: melee.Character, c2: melee.Character, s: 
     print(f'Data/{c1.name}_{c2.name}_on_{s.name}_data.pkl')
     print(f'Data/{c2.name}_{c1.name}_on_{s.name}_data.pkl')
 
-
-    replay_paths = replays[f'{c1.name}_{c2.name}'][s.name]
+    try: 
+        replay_paths = replays[f'{c1.name}_{c2.name}'][s.name]
+    except: 
+        print(f'{c1.name}_{c2.name}_on_{s.name} DOES NOT EXIST, MOVING ON')
+        return
 
     Xp, Yp, Xo, Yo = load_data(replay_paths, c1, c2)
 
@@ -148,14 +151,45 @@ def process_replays(replays: dict, c1: melee.Character, c2: melee.Character, s: 
 
 
 if __name__ == '__main__':
-
+    # Check if /Data exists: 
+    if not os.path.exists("Data"):
+        os.makedirs("Data")
     # Mass Generate
     f = open('replays.json', 'r')
     replays = json.load(f)
-    characters = [melee.Character.FALCO, melee.Character.JIGGLYPUFF, melee.Character.MARTH, melee.Character.CPTFALCON, melee.Character.FOX]
+    #characters = [melee.Character.FALCO, melee.Character.JIGGLYPUFF, melee.Character.MARTH, melee.Character.CPTFALCON, melee.Character.FOX]
+    characters = [melee.Character.YOSHI,
+                    melee.Character.DOC,
+                    melee.Character.MARIO,
+                    melee.Character.LUIGI,
+                    melee.Character.BOWSER,
+                    melee.Character.PEACH,
+                    melee.Character.DK,
+                    melee.Character.GANONDORF,
+                    melee.Character.NESS,
+                    melee.Character.POPO,
+                    melee.Character.NESS,
+                    melee.Character.KIRBY,
+                    melee.Character.SAMUS,
+                    melee.Character.ZELDA,
+                    melee.Character.LINK,
+                    melee.Character.PICHU,
+                    melee.Character.MEWTWO,
+                    melee.Character.GAMEANDWATCH,
+                    melee.Character.ROY,
+                    melee.Character.MARTH,
+                    melee.Character.FOX, 
+                    melee.Character.FALCO,
+                    melee.Character.JIGGLYPUFF,
+                    melee.Character.CPTFALCON
+                    ]
 
-    for e, c1 in enumerate(characters):
-        for c2 in characters[e+1:]:
-            if c1 != c2:
-                for s in [melee.Stage.FINAL_DESTINATION]:
-                    process_replays(replays, c1, c2, s)
+    #c1 = melee.Character.PIKACHU
+    c1 = melee.Character.FALCO
+
+    #for e, c1 in enumerate(characters):
+    for c2 in characters:
+        if c1 != c2:
+            #for s in [melee.Stage.FINAL_DESTINATION]:
+            for s in [melee.Stage.FINAL_DESTINATION]:
+                process_replays(replays, c1, c2, s)

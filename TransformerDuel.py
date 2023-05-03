@@ -16,7 +16,7 @@ import numpy as np
 import MovesList
 
 import random
-from Bot import Bot
+from TransformerBot import Bot
 from keras.models import load_model
 from keras.utils import custom_object_scope
 from train_transformer import MultiHeadSelfAttention
@@ -24,10 +24,10 @@ from train_transformer import MultiHeadSelfAttention
 args = Args.get_args()
 smash_last = False
 
-player_character = melee.Character.PIKACHU
-opponent_character = melee.Character.FOX
-#player_character = melee.Character.FOX
-#opponent_character = melee.Character.FALCO
+#player_character = melee.Character.PIKACHU
+#opponent_character = melee.Character.FOX
+player_character = melee.Character.FOX
+opponent_character = melee.Character.FALCO
 stage = melee.Stage.FINAL_DESTINATION
 level=9
 
@@ -44,9 +44,9 @@ if __name__ == '__main__':
     print(file_name)
 
     # Use the Keras load_model function to load the model
-    model = load_model(file_name)
-    #with custom_object_scope({'MultiHeadSelfAttention': MultiHeadSelfAttention}):
-    #    model = load_model(file_name)
+    #model = load_model(file_name)
+    with custom_object_scope({'MultiHeadSelfAttention': MultiHeadSelfAttention}):
+        model = load_model(file_name)
     
     game = GameManager.Game(args)
     game.enterMatch(cpu_level=level, opponant_character=opponent_character,

@@ -5,7 +5,7 @@ from DataHandler import generate_input, generate_output, decode_from_model
 import numpy as np
 
 import MovesList
-
+import collections
 
 class Bot:
     def __init__(self, model, controller: melee.Controller, opponent_controller: melee.Controller):
@@ -18,6 +18,11 @@ class Bot:
         self.delay = 0
         self.pause_delay = 0
         self.firefoxing = False
+
+        # Initialize a deque with maxlen 10 to store the input data points
+        self.input_buffer = collections.deque(maxlen=5)
+        for _ in range(4):  # Fill the buffer with 4 zero-vectors initially
+            self.input_buffer.append(np.zeros(37))
 
     def validate_action(self, action, gamestate: melee.GameState, port: int, opponent_port: int):
         # global smash_last
@@ -97,8 +102,14 @@ class Bot:
         self.frame_counter += 1
 
         inp = generate_input(gamestate, self.controller.port, self.opponent_controller.port)
-        a = self.model.predict(np.array([inp]), verbose=0, use_multiprocessing=True)
-        print(a)
+        
+        # Add the new input data point to the buffer
+        self.input_buffer.append(inp)
+        
+        # Combine the buffer into a single input sequence of length 10
+        input_sequence = np.array([list(self.input_buffer)])
+        
+        a = self.model.predict(input_sequence, verbose=0, use_multiprocessing=True)
         a, action = decode_from_model(a, player, gamestate.stage)
 
         action = self.validate_action(action, gamestate, self.controller.port, self.opponent_controller.port)
